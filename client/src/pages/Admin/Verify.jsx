@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState, useEffect, Fragment } from "react";
 import { Link, useParams } from "react-router-dom";
 import { BASE_URL } from "../../config.js";

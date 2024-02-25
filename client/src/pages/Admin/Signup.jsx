@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { BASE_URL } from "../../config";
@@ -11,6 +12,7 @@ const Signup = () => {
     email: "",
     password: "",
     cpassword: "",
+    code: "",
   });
 
   const navigate = useNavigate();
@@ -24,6 +26,9 @@ const Signup = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    if (formData.code !== "123") {
+      return toast.error("Invalid Security Code");
+    }
     setLoading(true);
     try {
       const res = await fetch(`${BASE_URL}/auth/admin/signup`, {
@@ -140,6 +145,25 @@ const Signup = () => {
                     name="cpassword"
                     autoComplete="password"
                     value={formData.cpassword}
+                    onChange={handleInputChange}
+                    className="px-2 block w-full mt-1 border-[1px] border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                  />
+                </div>
+              </div>
+              <div className="mt-4">
+                <label
+                  htmlFor="code"
+                  className="block text-sm font-medium  text-gray-700 undefined"
+                >
+                  Security Code
+                </label>
+                <div className="flex flex-col items-start">
+                  <input
+                    required
+                    type="code"
+                    name="code"
+                    autoComplete="code"
+                    value={formData.code}
                     onChange={handleInputChange}
                     className="px-2 block w-full mt-1 border-[1px] border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                   />

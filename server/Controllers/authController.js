@@ -1,5 +1,7 @@
 import Admin from "../models/AdminSchema.js";
-import Handler from "../models/HandlerSchema.js";
+import Faculty from "../models/FacultySchema.js";
+import Student from "../models/StudentSchema.js";
+import Account from "../models/AccountSchema.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import Token from "../models/token.js";
@@ -62,9 +64,9 @@ export const register = async (req, res) => {
 
     const url = `${process.env.FRONT_URL}/user/${temp._id}/verify/${token.token}`;
 
-    const html = `<h2>Hi ${temp.name}! Thanks for registering on our site </h2><h4> Please verfiy your mail to continue... </h4><a href=${url} >Verify your Email</a>`;
+    const html = `<h2>Hi ${temp.name}! Welcome Admin to our CMS site. </h2><h4> Please verfiy your mail to continue... </h4><a href=${url} >Verify your Email</a>`;
     // console.log(html);
-    await sendEmail(temp.email, "Verify Email: Blue Soltech-BiB Expo", html);
+    await sendEmail(temp.email, "Verify Email: College Management System", html);
 
     res.status(200).json({
       success: true,
@@ -106,11 +108,11 @@ export const login = async (req, res) => {
         }).save();
         const url = `${process.env.FRONT_URL}/user/${user.id}/verify/${token.token}`;
         // console.log(url);
-        const content = `<h2>Hi ${user.name}! Thanks for registering on our site </h2><h4> Please verfiy your mail to continue... </h4><a href=${url} >Verify your Email</a>`;
+        const content = `<h2>Hi ${user.name}! Welcome Admin to our CMS site. </h2><h4> Please verfiy your mail to continue... </h4><a href=${url} >Verify your Email</a>`;
         // console.log(content);
         await sendEmail(
           user.email,
-          "Verify Email: Blue Soltech-BiB Expo",
+          "Verify Email: College Management System",
           content
         );
       }
@@ -212,7 +214,11 @@ export const forgot = async (req, res) => {
     const html = `<h2>Hi ${user.name}! </h2>
                   <h4> Please change your password with this link </h4>
                   <a href=${url} >Change your Password</a>`;
-    await sendEmail(user.email, "Change Password: Blue Soltech-BiB Expo", html);
+    await sendEmail(
+      user.email,
+      "Change Password: College Management System",
+      html
+    );
 
     res.status(200).json({
       success: true,
@@ -271,31 +277,58 @@ export const change = async (req, res) => {
   }
 };
 
-export const handlerlogin = async (req, res) => {
-  const { username, password } = req.body;
+export const userlogin = async (req, res) => {
+  const { email, password, usertype } = req.body;
   try {
     let user = null;
-    user = await Handler.findOne({ username });
+    if(usertype === "student")
+      user = await Student.findOne({ email });
+    else if (usertype === "faculty")
+      user = await Faculty.findOne({ email });
+    else if (usertype === "account")
+      user = await Account.findOne({ email });
 
     if (!user) {
-      return res.status(404).json({ message: "Handler not found" });
+      return res.status(404).json({ message: "User not found" });
     }
 
-    if (password !== user.password) {
+     if (password !== user.password) {
+       return res
+         .status(400)
+         .json({ status: false, message: "Invalid Credantials" });
+     }
+
+    if (user.verified == false) {
+      let token = await Token.findOne({ userId: user._id });
+      if (!token) {
+        token = await new Token({
+          userId: user._id,
+          token: crypto.randomBytes(32).toString("hex"),
+        }).save();
+        const url = `${process.env.FRONT_URL}/user/${user.id}/verify/${token.token}`;
+        // console.log(url);
+        const content = `<h2>Hi ${temp.name}! Welcome User to our CMS site. </h2><h4> Please verfiy your mail to continue... </h4><a href=${url} >Verify your Email</a>`;
+        // console.log(content);
+        await sendEmail(
+          user.email,
+          "Verify Email: College Management System",
+          content
+        );
+      }
       return res
         .status(400)
-        .json({ status: false, message: "Invalid Credantials" });
+        .json({ status: false, message: "Verify your email address. Mail is sent on your registered address." });
     }
 
     const token = generateToken(user);
 
-    const { event, _id } = user._doc;
+    const { _id } = user._doc;
 
     res.status(200).json({
       status: true,
       message: "Successfully login",
       token,
-      data: { event, _id },
+      data: { _id },
     });
   } catch (err) {
     console.log(err);

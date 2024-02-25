@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
 
 import Header from "../components/header/Header";
@@ -7,7 +8,7 @@ import Routers from "../routes/Routers";
 const Layout = () => {
   return (
     <div>
-      <Header />
+      {/* <Header /> */}
       <main>
         <Routers />
       </main>

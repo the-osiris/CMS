@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useContext } from "react";
 import { FaInfoCircle } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
@@ -69,7 +70,7 @@ const Login = () => {
         <div className="bg-white w-fit mx-auto pb-9 px-4 rounded-xl">
           <div className="flex flex-col items-center sm:mx-auto sm:w-full sm:max-w-sm">
             <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-              Sign in to your Handler account
+              Sign in to your account
             </h2>
           </div>
 

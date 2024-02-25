@@ -6,7 +6,7 @@ import {
   forgot,
   change,
   verifyroute,
-  handlerlogin,
+  userlogin,
 } from "../Controllers/authController.js";
 
 const router = express.Router();
@@ -18,6 +18,6 @@ router.get("/admin/:id/verify/:token", verify);
 router.post("/admin/:id/change/:token", change);
 router.get("/admin/:id/verifyroute/:token", verifyroute);
 
-router.post("/handler/login", handlerlogin);
+router.post("/user/login", userlogin);
 
 export default router;

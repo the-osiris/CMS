@@ -2,10 +2,9 @@ import { Routes, Route } from "react-router-dom";
 import { Suspense, lazy } from "react";
 import Loading from "../components/Loader/Loading";
 
-const Home = lazy(() => import("../pages/Home"));
+const Home = lazy(() => import("../pages/Admin/Home"));
 const Login = lazy(() => import("../pages/User/Login"));
 const Error = lazy(() => import("../pages/Error"));
-const CreateEvent = lazy(() => import("../pages/CreateEvent"));
 
 const ProtectedRoute = lazy(() => import("./ProtectedRoute"));
 const ProtectedRouteAdmin = lazy(() => import("./ProtectedRouteAdmin"));
@@ -16,49 +15,18 @@ const ALogin = lazy(() => import("../pages/Admin/ALogin"));
 const Signup = lazy(() => import("../pages/Admin/Signup"));
 const Verify = lazy(() => import("../pages/Admin/Verify"));
 const Change = lazy(() => import("../pages/Admin/Change"));
-const HomeHandler = lazy(() => import("../pages/HomeHandler"));
-const Panel = lazy(() => import("../pages/Panel"));
-const Dashboard = lazy(() => import("../pages/Admin/Dashboard"));
+const HomeHandler = lazy(() => import("../pages/User/HomeHandler"));
 
 const Routers = () => {
   return (
     <Routes>
-      <Route
-        path="/"
-        element={
-          <Suspense fallback={<Loading />}>
-            <ProtectedRoute>
-              <HomeHandler />
-            </ProtectedRoute>
-          </Suspense>
-        }
-      />
-      <Route
-        path="/panel"
-        element={
-          <Suspense fallback={<Loading />}>
-            <ProtectedRoute>
-              <Panel />
-            </ProtectedRoute>
-          </Suspense>
-        }
-      />
+      {/* admin   */}
       <Route
         path="/admin"
         element={
           <Suspense fallback={<Loading />}>
             <ProtectedRouteAdmin>
               <Home />
-            </ProtectedRouteAdmin>
-          </Suspense>
-        }
-      />
-      <Route
-        path="/admin/:id"
-        element={
-          <Suspense fallback={<Loading />}>
-            <ProtectedRouteAdmin>
-              <Dashboard />
             </ProtectedRouteAdmin>
           </Suspense>
         }
@@ -87,6 +55,8 @@ const Routers = () => {
           </Suspense>
         }
       />
+
+      {/* general  */}
       <Route
         path="/user/:id/verify/:token"
         element={
@@ -107,19 +77,18 @@ const Routers = () => {
           </Suspense>
         }
       />
-      {/* #Create Event  */}
+
+      {/* user   */}
       <Route
-        path="/admin/create"
+        path="/"
         element={
           <Suspense fallback={<Loading />}>
-            <ProtectedRouteAdmin>
-              <CreateEvent />
-            </ProtectedRouteAdmin>
+            <ProtectedRoute>
+              <HomeHandler />
+            </ProtectedRoute>
           </Suspense>
         }
       />
-
-      {/* user   */}
       <Route
         path="/login"
         element={
@@ -128,6 +97,8 @@ const Routers = () => {
           </Suspense>
         }
       />
+
+      {/* error  */}
       <Route
         path="*"
         element={

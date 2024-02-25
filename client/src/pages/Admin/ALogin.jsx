@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useContext } from "react";
 import { FaInfoCircle } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
@@ -75,7 +76,7 @@ const ALogin = () => {
             </h2>
             {error && (
               <p className="flex items-center text-textColor text-[12px] w-full mt-10">
-                <FaInfoCircle className="mr-2" /> Couldn't find mail? Check your
+                <FaInfoCircle className="mr-2" /> {"Couldn't"} find mail? Check your
                 spam
               </p>
             )}
@@ -146,7 +147,7 @@ const ALogin = () => {
             </form>
 
             <p className="mt-10 text-center text-sm text-gray-500">
-              Don't have an Admin account?{" "}
+              {"Don't"} have an Admin account?{" "}
               <Link
                 to="/admin/signup"
                 className="font-semibold leading-6 text-blue-500 hover:text-blue-700"

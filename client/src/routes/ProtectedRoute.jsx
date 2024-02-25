@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useContext, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { authContext } from "../context/AuthContext";
@@ -12,8 +13,9 @@ const ProtectedRoute = ({ children }) => {
   }
 
   const handleCheckHandler = async () => {
+    if(token === null) return;
     try {
-      const res = await fetch(`${BASE_URL}/user/isHandler`, {
+      const res = await fetch(`${BASE_URL}/user/isUser`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -23,7 +25,9 @@ const ProtectedRoute = ({ children }) => {
       if (!res.ok) {
         dispatch({ type: "LOGOUT" });
       }
-    } catch (err) {}
+    } catch (err) {
+      console.log(err)
+    }
   };
 
   useEffect(() => {
